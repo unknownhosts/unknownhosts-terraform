@@ -1,7 +1,5 @@
-# lincoln
-
-# repository Name 
-- repository Name : {csp}-{projectName}
+# repositoryName 
+- repositoryName : {csp}-{projectName}
 
 # layout
 - level1 : {environment}
