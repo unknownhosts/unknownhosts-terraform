@@ -1,14 +1,14 @@
 # UKNOWNHOSTS (2022 Q2 lincoln project)
 
-### feature branch naming rules
+## feature branch naming rules
 feature_{name}_{yyyymmdd}_{detailes}
 
-### git commit rules
+## git commit rules
 ```
 git commit -m '{jiraNumber}_{name}_{count}_{details}
 ```
 
-### pull request comment rules
+## pull request comment rules
 ```
 ## 제목
 
