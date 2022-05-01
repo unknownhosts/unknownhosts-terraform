@@ -5,7 +5,7 @@ feature_{name}_{yyyymmdd}_{detailes}
 
 ## git commit rules
 ```
-git commit -m '{jiraNumber}_{name}_{count}_{details}
+git commit -m '{jiraNumber}_{name}_{count}_{details}'
 ```
 
 ## pull request comment rules
