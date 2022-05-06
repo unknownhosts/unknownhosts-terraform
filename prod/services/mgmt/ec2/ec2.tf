@@ -1,0 +1,4 @@
+
+locals {
+  default = var.environmentName
+}
