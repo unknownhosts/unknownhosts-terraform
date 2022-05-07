@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "./modules/vpc"
+  source = "../modules/vpc"
 
   name = "${var.env_name}-${var.account_name}"
   cidr = "${var.vpc_cidr}"
