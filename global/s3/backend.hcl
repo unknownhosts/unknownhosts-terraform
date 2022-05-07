@@ -1,4 +1,4 @@
-bucket = "jordan-terraform-state"
+bucket = "terraform-state"
 region = "ap-northeast-2"  
-dynamodb_table = "jordan-dynamodb-terraform-statelock-s3"
+dynamodb_table = "terraform-state-lock-s3"
 encrypt = true               

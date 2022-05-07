@@ -1,4 +1,4 @@
-bucket = "jordan-terraform-state"
+bucket = "prod-lincoln-terraform-state"
 region = "ap-northeast-2"  
-dynamodb_table = "jordan-dynamodb-terraform-statelock-backend-ec2"
+dynamodb_table = "prod-lincoln-terraform-state-lock-mgmt-sg"
 encrypt = true               

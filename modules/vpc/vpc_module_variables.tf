@@ -115,103 +115,26 @@ variable "instance_tenancy" {
 variable "public_route_suffix" {
   description = "Suffix to append to public subnets name"
   type        = string
-  default     = "publc-route"
+  default     = ""
 }
 
 variable "private_route_suffix" {
   description = "Suffix to append to dev web was private subnets name"
   type        = list(string)
-  default     = ["private-frontend-route",
-                 "private-frontend-route",
-                 "private-backend-route",
-                 "private-backend-route",
-                 "private-mgmt-route",
-                 "private-mgmt-route",
-                 "private-db-route",
-                 "private-db-route",
-                ]
+  default     = []
 }
 
 variable "public_subnet_suffix" {
   description = "Suffix to append to public subnets name"
   type        = string
-  default     = "public-subnet"
+  default     = ""
 }
 
 variable "private_subnet_suffix" {
   description = "Suffix to append to private subnets name"
   type        = list(string)
-  default     = ["private-frontend-subnet",
-                 "private-frontend-subnet",
-                 "private-backend-subnet",
-                 "private-backend-subnet",
-                 "private-mgmt-subnet",
-                 "private-mgmt-subnet",
-                 "private-db-subnet",
-                 "private-db-subnet"
-              ]
+  default     = []
 }
-
-# variable "gateway_private_subnet_suffix" {
-#   description = "Suffix to append to gateway private subnets name"
-#   type        = list(string)
-#   default     = ["GATEWAY-PRIVATE-SUBNET","GATEWAY-PRIVATE-SUBNET"]
-# }
-
-# variable "frontend_private_subnet_suffix" {
-#   description = "Suffix to append to frontend private subnets name"
-#   type        = list(string)
-#   default     = ["FRONTEND-PRIVATE-SUBNET","FRONTEND-PRIVATE-SUBNET"]
-# }
-
-# variable "backend_private_subnet_suffix" {
-#   description = "Suffix to append to backend private subnets name"
-#   type        = list(string)
-#   default     = ["BACKEND-PRIVATE-SUBNET","BACKEND-PRIVATE-SUBNET"]
-# }
-
-# variable "managed_private_subnet_suffix" {
-#   description = "Suffix to append to managed private subnets name"
-#   type        = list(string)
-#   default     = ["MANAGED-PRIVATE-SUBNET","MANAGED-PRIVATE-SUBNET"]
-# }
-
-# variable "db_private_subnet_suffix" {
-#   description = "Suffix to append to db private subnets name"
-#   type        = list(string)
-#   default     = ["DB-PRIVATE-SUBNET","DB-PRIVATE-SUBNET"]
-# }
-
-# variable "bigdata_private_subnet_suffix" {
-#   description = "Suffix to append to bigdata private subnets name"
-#   type        = list(string)
-#   default     = ["BIGDATA-PRIVATE-SUBNET","BIGDATA-PRIVATE-SUBNET"]
-# }
-
-
-# variable "intra_subnet_suffix" {
-#   description = "Suffix to append to intra subnets name"
-#   type        = string
-#   default     = "intra"
-# }
-
-# variable "database_subnet_suffix" {
-#   description = "Suffix to append to database subnets name"
-#   type        = string
-#   default     = "db"
-# }
-
-# variable "redshift_subnet_suffix" {
-#   description = "Suffix to append to redshift subnets name"
-#   type        = string
-#   default     = "redshift"
-# }
-
-# variable "elasticache_subnet_suffix" {
-#   description = "Suffix to append to elasticache subnets name"
-#   type        = string
-#   default     = "elasticache"
-# }
 
 variable "public_subnets" {
   description = "A list of public subnets inside the VPC"
@@ -224,65 +147,6 @@ variable "private_subnets" {
   type        = list(string)
   default     = []
 }
-
-# variable "gateway_private_subnets" {
-#   description = "A list of gateway private subnets inside the VPC"
-#   type        = list(string)
-#   default     = []
-# }
-
-# variable "frontend_private_subnets" {
-#   description = "A list of frontend_private subnets inside the VPC"
-#   type        = list(string)
-#   default     = []
-# }
-
-# variable "backend_private_subnets" {
-#   description = "A list of backend private subnets inside the VPC"
-#   type        = list(string)
-#   default     = []
-# }
-
-# variable "db_private_subnets" {
-#   description = "A list of db private subnets inside the VPC"
-#   type        = list(string)
-#   default     = []
-# }
-
-# variable "managed_private_subnets" {
-#   description = "A list of managed private subnets inside the VPC"
-#   type        = list(string)
-#   default     = []
-# }
-# variable "bigdata_private_subnets" {
-#   description = "A list of private subnets inside the VPC"
-#   type        = list(string)
-#   default     = []
-# }
-
-# variable "database_subnets" {
-#   description = "A list of database subnets"
-#   type        = list(string)
-#   default     = []
-# }
-
-# variable "redshift_subnets" {
-#   description = "A list of redshift subnets"
-#   type        = list(string)
-#   default     = []
-# }
-
-# variable "elasticache_subnets" {
-#   description = "A list of elasticache subnets"
-#   type        = list(string)
-#   default     = []
-# }
-
-# variable "intra_subnets" {
-#   description = "A list of intra subnets"
-#   type        = list(string)
-#   default     = []
-# }
 
 variable "create_database_subnet_route_table" {
   description = "Controls if separate route table for database should be created"

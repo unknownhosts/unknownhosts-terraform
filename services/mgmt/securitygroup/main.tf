@@ -1,20 +1,13 @@
 
 locals {
     common_tags = {
-        AccountName   = ""
-        Corp          = ""
-        Csp           = ""
-        Team          = "" 
-        ServiceGroup  = ""
-        CreatedBy     = ""
-        Phase         = ""
-    }
-}
-
+        project_name = "lincoln"
+    } 
+}   
 
 terraform {
   backend "s3" {  
-    key = "backend/sg/terraform.tfstate"
+    key = "mgmt/sg/terraform.tfstate"
   }  
 }
 

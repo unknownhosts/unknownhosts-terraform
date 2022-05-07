@@ -8,7 +8,8 @@ variable "env_name" {
     default     = "prod"
     description = "environment name"
 }
-variable "account_name" {
+
+variable "project_name" {
     type        = string
     default     = "lincoln"
     description = "aws account name"
@@ -52,4 +53,44 @@ variable "private_cidr" {
                    "10.0.10.0/24",
                 ]
     description = "private cidr"
+}
+
+variable "private_subnet_suffix" {
+  description = "Suffix to append to private subnets name"
+  type        = list(string)
+  default     = ["private-frontend-subnet",
+                 "private-frontend-subnet",
+                 "private-backend-subnet",
+                 "private-backend-subnet",
+                 "private-mgmt-subnet",
+                 "private-mgmt-subnet",
+                 "private-db-subnet",
+                 "private-db-subnet"
+              ]
+}
+
+variable "private_route_suffix" {
+  description = "Suffix to append to dev web was private subnets name"
+  type        = list(string)
+  default     = ["private-frontend-route",
+                 "private-frontend-route",
+                 "private-backend-route",
+                 "private-backend-route",
+                 "private-mgmt-route",
+                 "private-mgmt-route",
+                 "private-db-route",
+                 "private-db-route",
+                ]
+}
+
+variable "public_route_suffix" {
+  description = "Suffix to append to public subnets name"
+  type        = string
+  default     = "publc-route"
+}
+
+variable "public_subnet_suffix" {
+  description = "Suffix to append to public subnets name"
+  type        = string
+  default     = "public-subnet"
 }

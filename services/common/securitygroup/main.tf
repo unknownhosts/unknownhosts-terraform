@@ -1,15 +1,10 @@
 
 locals {
     common_tags = {
-        AccountName   = ""
-        Corp          = ""
-        Csp           = ""
-        Team          = "" 
-        ServiceGroup  = ""
-        CreatedBy     = ""
-        Phase         = ""
-    }
-}
+        project_name = "lincoln"
+    } 
+}   
+
 
 
 terraform {

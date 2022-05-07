@@ -152,10 +152,10 @@ resource "aws_route_table" "private" {
 
   tags = merge(
     {
-      "Name" = var.single_nat_gateway ? "${var.name}-${var.private_route_suffix}" : format(
-        "%s-${var.private_route_suffix}-%s",
+      "Name" = var.single_nat_gateway ? "${var.name}-${element(var.private_route_suffix, count.index)}" : format(
+        "%s-${element(var.private_route_suffix, count.index)}-%s",
         var.name,
-        upper(substr(element(var.azs, count.index),-1,0)),
+        substr(element(var.azs, count.index),-1,0),
       )
     },
     var.tags,
@@ -188,7 +188,7 @@ resource "aws_subnet" "public" {
       "Name" = format(
         "%s-${var.public_subnet_suffix}-%s",
         var.name,
-        upper(substr(element(var.azs, count.index),-1,0)),
+        substr(element(var.azs, count.index),-1,0),
       )
     },
     var.tags,
@@ -215,148 +215,13 @@ resource "aws_subnet" "private" {
       "Name" = format(
         "%s-${element(var.private_subnet_suffix,count.index)}-%s",
         var.name,
-        upper(substr(element(var.azs, count.index),-1,0)),
+        substr(element(var.azs, count.index),-1,0),
       )
     },
     var.tags,
     var.private_subnet_tags,
   )
 }
-
-# resource "aws_subnet" "gateway_private" {
-#   count = var.create_vpc && length(var.gateway_private_subnets) > 0 ? length(var.gateway_private_subnets) : 0
-
-#   vpc_id                          = local.vpc_id
-#   cidr_block                      = var.gateway_private_subnets[count.index]
-#   availability_zone               = element(var.azs, count.index)
-#   assign_ipv6_address_on_creation = var.private_subnet_assign_ipv6_address_on_creation == null ? var.assign_ipv6_address_on_creation : var.private_subnet_assign_ipv6_address_on_creation
-
-#   ipv6_cidr_block = var.enable_ipv6 && length(var.private_subnet_ipv6_prefixes) > 0 ? cidrsubnet(aws_vpc.this[0].ipv6_cidr_block, 8, var.private_subnet_ipv6_prefixes[count.index]) : null
-
-#   tags = merge(
-#     {
-#       "Name" = format(
-#         "%s-${element(var.gateway_private_subnet_suffix,count.index)}-%s",
-#         var.name,
-#         upper(substr(element(var.azs, count.index),-1,0)),
-#       )
-#     },
-#     var.tags,
-#     var.private_subnet_tags,
-#   )
-# }
-
-# resource "aws_subnet" "frontend_private" {
-#   count = var.create_vpc && length(var.frontend_private_subnets) > 0 ? length(var.frontend_private_subnets) : 0
-
-#   vpc_id                          = local.vpc_id
-#   cidr_block                      = var.frontend_private_subnets[count.index]
-#   availability_zone               = element(var.azs, count.index)
-#   assign_ipv6_address_on_creation = var.private_subnet_assign_ipv6_address_on_creation == null ? var.assign_ipv6_address_on_creation : var.private_subnet_assign_ipv6_address_on_creation
-
-#   ipv6_cidr_block = var.enable_ipv6 && length(var.private_subnet_ipv6_prefixes) > 0 ? cidrsubnet(aws_vpc.this[0].ipv6_cidr_block, 8, var.private_subnet_ipv6_prefixes[count.index]) : null
-
-#   tags = merge(
-#     {
-#       "Name" = format(
-#         "%s-${element(var.frontend_private_subnet_suffix,count.index)}-%s",
-#         var.name,
-#         upper(substr(element(var.azs, count.index),-1,0)),
-#       )
-#     },
-#     var.tags,
-#     var.private_subnet_tags,
-#   )
-# }
-
-# resource "aws_subnet" "backend_private" {
-#   count = var.create_vpc && length(var.backend_private_subnets) > 0 ? length(var.backend_private_subnets) : 0
-
-#   vpc_id                          = local.vpc_id
-#   cidr_block                      = var.backend_private_subnets[count.index]
-#   availability_zone               = element(var.azs, count.index)
-#   assign_ipv6_address_on_creation = var.private_subnet_assign_ipv6_address_on_creation == null ? var.assign_ipv6_address_on_creation : var.private_subnet_assign_ipv6_address_on_creation
-
-#   ipv6_cidr_block = var.enable_ipv6 && length(var.private_subnet_ipv6_prefixes) > 0 ? cidrsubnet(aws_vpc.this[0].ipv6_cidr_block, 8, var.private_subnet_ipv6_prefixes[count.index]) : null
-
-#   tags = merge(
-#     {
-#       "Name" = format(
-#         "%s-${element(var.backend_private_subnet_suffix,count.index)}-%s",
-#         var.name,
-#         upper(substr(element(var.azs, count.index),-1,0)),
-#       )
-#     },
-#     var.tags,
-#     var.private_subnet_tags,
-#   )
-# }
-# resource "aws_subnet" "mgmt_private" {
-#   count = var.create_vpc && length(var.mgmt_private_subnets) > 0 ? length(var.mgmt_private_subnets) : 0
-
-#   vpc_id                          = local.vpc_id
-#   cidr_block                      = var.mgmt_private_subnets[count.index]
-#   availability_zone               = element(var.azs, count.index)
-#   assign_ipv6_address_on_creation = var.private_subnet_assign_ipv6_address_on_creation == null ? var.assign_ipv6_address_on_creation : var.private_subnet_assign_ipv6_address_on_creation
-
-#   ipv6_cidr_block = var.enable_ipv6 && length(var.private_subnet_ipv6_prefixes) > 0 ? cidrsubnet(aws_vpc.this[0].ipv6_cidr_block, 8, var.private_subnet_ipv6_prefixes[count.index]) : null
-
-#   tags = merge(
-#     {
-#       "Name" = format(
-#         "%s-${element(var.mgmt_private_subnet_suffix,count.index)}-%s",
-#         var.name,
-#         upper(substr(element(var.azs, count.index),-1,0)),
-#       )
-#     },
-#     var.tags,
-#     var.private_subnet_tags,
-#   )
-# }
-# resource "aws_subnet" "db_private" {
-#   count = var.create_vpc && length(var.db_private_subnets) > 0 ? length(var.db_private_subnets) : 0
-
-#   vpc_id                          = local.vpc_id
-#   cidr_block                      = var.db_private_subnets[count.index]
-#   availability_zone               = element(var.azs, count.index)
-#   assign_ipv6_address_on_creation = var.private_subnet_assign_ipv6_address_on_creation == null ? var.assign_ipv6_address_on_creation : var.private_subnet_assign_ipv6_address_on_creation
-
-#   ipv6_cidr_block = var.enable_ipv6 && length(var.private_subnet_ipv6_prefixes) > 0 ? cidrsubnet(aws_vpc.this[0].ipv6_cidr_block, 8, var.private_subnet_ipv6_prefixes[count.index]) : null
-
-#   tags = merge(
-#     {
-#       "Name" = format(
-#         "%s-${element(var.db_private_subnet_suffix,count.index)}-%s",
-#         var.name,
-#         upper(substr(element(var.azs, count.index),-1,0)),
-#       )
-#     },
-#     var.tags,
-#     var.private_subnet_tags,
-#   )
-# }
-# resource "aws_subnet" "bigdata_private" {
-#   count = var.create_vpc && length(var.bigdata_private_subnets) > 0 ? length(var.bigdata_private_subnets) : 0
-
-#   vpc_id                          = local.vpc_id
-#   cidr_block                      = var.bigdata_private_subnets[count.index]
-#   availability_zone               = element(var.azs, count.index)
-#   assign_ipv6_address_on_creation = var.private_subnet_assign_ipv6_address_on_creation == null ? var.assign_ipv6_address_on_creation : var.private_subnet_assign_ipv6_address_on_creation
-
-#   ipv6_cidr_block = var.enable_ipv6 && length(var.private_subnet_ipv6_prefixes) > 0 ? cidrsubnet(aws_vpc.this[0].ipv6_cidr_block, 8, var.private_subnet_ipv6_prefixes[count.index]) : null
-
-#   tags = merge(
-#     {
-#       "Name" = format(
-#         "%s-${element(var.bigdata_private_subnet_suffix,count.index)}-%s",
-#         var.name,
-#         upper(substr(element(var.azs, count.index),-1,0)),
-#       )
-#     },
-#     var.tags,
-#     var.private_subnet_tags,
-#   )
-# }
 
 ##############################################################################
 # Default Network ACLs
@@ -464,10 +329,10 @@ resource "aws_network_acl_rule" "public_outbound" {
 # Private Network ACLs
 ##############################################################################
 resource "aws_network_acl" "private" {
-  count = var.create_vpc && var.private_dedicated_network_acl && length(var.gateway_private_subnets) > 0 ? 1 : 0
+  count = var.create_vpc && var.private_dedicated_network_acl && length(var.private_subnets) > 0 ? 1 : 0
 
   vpc_id     = element(concat(aws_vpc.this.*.id, [""]), 0)
-  subnet_ids = aws_subnet.gateway_private.*.id
+  subnet_ids = aws_subnet.private.*.id
 
   tags = merge(
     {
@@ -479,7 +344,7 @@ resource "aws_network_acl" "private" {
 }
 
 resource "aws_network_acl_rule" "private_inbound" {
-  count = var.create_vpc && var.private_dedicated_network_acl && length(var.gateway_private_subnets) > 0 ? length(var.private_inbound_acl_rules) : 0
+  count = var.create_vpc && var.private_dedicated_network_acl && length(var.private_subnets) > 0 ? length(var.private_inbound_acl_rules) : 0
 
   network_acl_id = aws_network_acl.private[0].id
 
@@ -496,7 +361,7 @@ resource "aws_network_acl_rule" "private_inbound" {
 }
 
 resource "aws_network_acl_rule" "private_outbound" {
-  count = var.create_vpc && var.private_dedicated_network_acl && length(var.gateway_private_subnets) > 0 ? length(var.private_outbound_acl_rules) : 0
+  count = var.create_vpc && var.private_dedicated_network_acl && length(var.private_subnets) > 0 ? length(var.private_outbound_acl_rules) : 0
 
   network_acl_id = aws_network_acl.private[0].id
 
@@ -538,7 +403,7 @@ resource "aws_eip" "nat" {
   tags = merge(
     {
       "Name" = format(
-        "%s-NAT-GATEWAY-%s-EIP",
+        "%s-nat-gateway-%s-eip",
         var.name,
         substr(element(var.azs, var.single_nat_gateway ? 0 : count.index),-2,0),
       )
@@ -563,7 +428,7 @@ resource "aws_nat_gateway" "this" {
   tags = merge(
     {
       "Name" = format(
-        "%s-NAT-GATEWAY-%s",
+        "%s-nat-gateway-%s",
         var.name,
         substr(element(var.azs, var.single_nat_gateway ? 0 : count.index),-2,0),
       )
@@ -588,7 +453,7 @@ resource "aws_route" "private_nat_gateway" {
 }
 
 resource "aws_route" "private_ipv6_egress" {
-  count = var.create_vpc && var.enable_ipv6 ? length(var.gateway_private_subnets) : 0
+  count = var.create_vpc && var.enable_ipv6 ? length(var.private_subnets) : 0
 
   route_table_id              = element(aws_route_table.private.*.id, count.index)
   destination_ipv6_cidr_block = "::/0"

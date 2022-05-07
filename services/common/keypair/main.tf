@@ -7,7 +7,7 @@ locals {
 
 terraform {
   backend "s3" {  
-    key = "mgmt/ec2/terraform.tfstate"
+    key = "common/keypair/terraform.tfstate"
   }  
 }
 
