@@ -8,6 +8,7 @@ variable "resource_name" {
   default = [
     "common-vpc",
     "common-keypair",
-    "mgmt-ec2"
+    "mgmt-ec2",
+    "mgmt-sg"
   ]      
 }
