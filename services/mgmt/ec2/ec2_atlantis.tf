@@ -31,6 +31,6 @@ module "ec2_atlantis"{
   tags = merge(local.common_tags, 
         {
           Name = "${terraform.workspace}-${var.project_name}-atlantis"
-          createdBy = "test"
+          createdBy = "1234"
         })
 }
