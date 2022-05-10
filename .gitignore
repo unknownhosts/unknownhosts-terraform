@@ -2,6 +2,7 @@
 **/.terraform/modules
 **/.terraform/providers
 terraform.exe
+terraform
 
 # Etc files
 *.cmd*
