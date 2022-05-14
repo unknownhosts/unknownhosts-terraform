@@ -1,0 +1,32 @@
+version: 3
+automerge: true
+projects:
+  - name: dev-test
+    dir: ap-southeast-1/test
+    workspace: dev
+    workflow: terragrunt
+    autoplan:
+      enabled: false
+
+  - name: prod-test
+    dir: ap-southeast-1/test
+    workspace: prod
+    workflow: terragrunt
+    autoplan:
+      enabled: false
+
+workflows:
+  terragrunt:
+    plan:
+      steps:
+        - env:
+            name: TFVARS_FILE
+            command: cat env/$WORKSPACE.tfvars
+        - run: echo -e "env/$WORKSPACE.tfvars File \n$TFVARS_FILE \n\n\n"
+        - run: terragrunt init -upgrade=true -no-color
+        - run: terraform workspace select $WORKSPACE -no-color || terraform workspace new $WORKSPACE -no-color
+        - run: terragrunt plan --var-file="env/$WORKSPACE.tfvars" -no-color -out $PLANFILE
+
+    apply:
+      steps:
+        - run: terragrunt apply -no-color $PLANFILE
