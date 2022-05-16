@@ -20,4 +20,4 @@ workflows:
   myworkflow:
     plan:
       steps:
-      - run: terraform init -input=false
+      - run: terraform init -backend-config=backend.hcl
