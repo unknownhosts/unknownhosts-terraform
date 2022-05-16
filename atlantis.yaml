@@ -8,7 +8,7 @@ projects:
     enabled: true
   workflow: myworkflow
 
-- name : prod-project
+- name : dev-project
   dir: services/mgmt/ec2
   workspace: dev
   autoplan:
