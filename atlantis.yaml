@@ -21,3 +21,5 @@ workflows:
     plan:
       steps:
       - run: terraform init -backend-config=backend.hcl
+      - plan:
+        extra_args: ["-lock", "false"]
