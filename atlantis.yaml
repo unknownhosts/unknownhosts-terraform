@@ -1,6 +1,23 @@
 version: 3
 projects:
-- dir: services
+- name : prod-project
+  dir: services/mgmt/ec2
   workspace: prod
   autoplan:
     when_modified: ["../modules/**/*.tf", "*.tf*"]
+    enabled: true
+  workflow: myworkflow
+
+- name : prod-project
+  dir: services/mgmt/ec2
+  workspace: dev
+  autoplan:
+    when_modified: ["../modules/**/*.tf", "*.tf*"]
+    enabled: true
+  workflow: myworkflow
+
+workflows:
+  myworkflow:
+    plan:
+      steps:
+      - run: terraform init -input=false
