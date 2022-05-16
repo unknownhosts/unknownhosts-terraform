@@ -1,5 +1,6 @@
 version: 3
 projects:
 - dir: services
+  workspace: prod
   autoplan:
     when_modified: ["../modules/**/*.tf", "*.tf*"]
