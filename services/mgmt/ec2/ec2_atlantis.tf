@@ -32,5 +32,6 @@ module "ec2_atlantis"{
         {
           Name = "${terraform.workspace}-${var.project_name}-atlantis"
           createdBy = "jordan.kim"
+          test = "test"
         })
 }
