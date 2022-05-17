@@ -21,4 +21,4 @@ workflows:
     plan:
       steps:
       - run: terraform init -backend-config=backend.hcl
-      - run: terraform plan
+      - run: terraform plan -no-color
