@@ -22,9 +22,9 @@ module "ec2_atlantis"{
     {
       volume_type = "gp2"
       volume_size = 10
-      tags = {
-        Name = format("${var.project_name}-atlantis-root-ebs")
-      }
+      # tags = {
+      #   Name = format("${var.project_name}-atlantis-root-ebs")
+      # }
     },
   ]
   
