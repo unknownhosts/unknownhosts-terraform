@@ -1,4 +1,5 @@
 version: 3
+parallel_plan: true
 projects:
 - name : prod-project
   dir: .
