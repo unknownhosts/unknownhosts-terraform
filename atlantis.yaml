@@ -1,7 +1,7 @@
 version: 3
 projects:
 - name : prod-project
-  dir: services/mgmt/ec2
+  dir: .
   workspace: prod
   autoplan:
     when_modified: ["../modules/**/*.tf", "*.tf*"]
@@ -9,7 +9,7 @@ projects:
   workflow: myworkflow
 
 - name : dev-project
-  dir: services/mgmt/ec2
+  dir: .
   workspace: dev
   autoplan:
     when_modified: ["../modules/**/*.tf", "*.tf*"]
