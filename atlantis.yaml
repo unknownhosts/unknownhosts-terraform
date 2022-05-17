@@ -2,7 +2,7 @@ version: 3
 parallel_plan: true
 projects:
 - name : prod-project
-  dir: .
+  dir: services/mgmt/ec2
   workspace: prod
   autoplan:
     when_modified: ["../modules/**/*.tf", "*.tf*"]
@@ -10,7 +10,7 @@ projects:
   workflow: myworkflow
 
 - name : dev-project
-  dir: .
+  dir: services/mgmt/ec2
   workspace: dev
   autoplan:
     when_modified: ["../modules/**/*.tf", "*.tf*"]
