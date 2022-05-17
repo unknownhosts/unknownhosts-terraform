@@ -13,7 +13,7 @@ projects:
   workspace: dev
   autoplan:
     when_modified: ["../modules/**/*.tf", "*.tf*"]
-    enabled: true
+    enabled: false
   workflow: myworkflow
 
 workflows:
