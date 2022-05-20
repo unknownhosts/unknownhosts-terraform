@@ -29,11 +29,21 @@ git commit -m '{name}_{date}_{count}_{details}'
 │   ├── modules
 │   │   └── {moudule_name}
 ```
+### terraform source code rule
+- all code : small letter
+- terraform resources : snake case
+- terraform variables : snake case
+- terraform outputs : snake case
+- aws resources : kebab case
+
 
 ## AWS rules
 ### AWS naming rule
 ```
-{project_name}-{phase}-{service_group_name}-{service_name}-{resource_name}
+{project_name}-{phase}-{resource_name}-{service_group_name}-{service_name}
 ex) lincoln-dev-mgmt-atlantis-ec2
+
+{project_name}-{phase}-{resource_name}-{etc}
+ex) lincoln-dev-terraform-state-ddb
 ```
 
