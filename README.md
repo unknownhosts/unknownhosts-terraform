@@ -11,7 +11,6 @@ feature_{name}_{yyyymmdd}_{detailes}
 git commit -m '{name}_{date}_{count}_{details}'
 ```
 
-
 ## terraform rules
 ### terraform layout rule
 ```
