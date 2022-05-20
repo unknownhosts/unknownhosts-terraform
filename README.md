@@ -16,12 +16,13 @@
 │   │   └── {moudule_name}
 
 
+
 ## feature branch naming rules
 feature\_{name}\_{yyyymmdd}\_{detailes}
 
 ## git commit rules
 ```
-git commit -m '{jiraNumber}_{name}_{count}_{details}'
+git commit -m '{name}_{date}_{count}_{details}'
 ```
 
 ## pull request comment rules
