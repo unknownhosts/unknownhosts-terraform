@@ -1,4 +1,20 @@
 # UKNOWNHOSTS (2022 Q2 lincoln project)
+## terraform layout rule
+├── {csp}
+│   ├── {account_name}
+│   │   ├── {environment}
+│   │   │   ├── global
+│   │   │   │   ├── {resource_name}
+│   │   │   └── vpcs
+│   │   │       └── {vpc_name}
+│   │   │           ├── services
+│   │   │           │   └── {service_name}
+│   │   │           │       └── {resource_name}
+│   │   │           └── network
+│   │   │               └── {resource_name}
+│   ├── modules
+│   │   └── {moudule_name}
+
 
 ## feature branch naming rules
 feature\_{name}\_{yyyymmdd}\_{detailes}

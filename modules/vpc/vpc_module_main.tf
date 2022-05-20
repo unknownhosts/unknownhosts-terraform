@@ -155,7 +155,7 @@ resource "aws_route_table" "private" {
       "Name" = var.single_nat_gateway ? "${var.name}-${element(var.private_route_suffix, count.index)}" : format(
         "%s-${element(var.private_route_suffix, count.index)}-%s",
         var.name,
-        substr(element(var.azs, count.index),-1,0),
+        upper(substr(element(var.azs, count.index),-1,0)),
       )
     },
     var.tags,
@@ -188,7 +188,7 @@ resource "aws_subnet" "public" {
       "Name" = format(
         "%s-${var.public_subnet_suffix}-%s",
         var.name,
-        substr(element(var.azs, count.index),-1,0),
+        upper(substr(element(var.azs, count.index),-1,0)),
       )
     },
     var.tags,
@@ -215,7 +215,7 @@ resource "aws_subnet" "private" {
       "Name" = format(
         "%s-${element(var.private_subnet_suffix,count.index)}-%s",
         var.name,
-        substr(element(var.azs, count.index),-1,0),
+        upper(substr(element(var.azs, count.index),-1,0)),
       )
     },
     var.tags,

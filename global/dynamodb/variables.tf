@@ -6,7 +6,10 @@ variable "region" {
 variable "resource_name" {
   type    = set(string)
   default = [
-    "common-vpc",
+    "global-dynamodb",
+    "global-iam",
+    "global-s3",
+    "network-vpc",
     "common-keypair",
     "mgmt-ec2",
     "mgmt-sg"

@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "../../../modules/vpc"
+  source = "../../modules/vpc"
 
   name = "${terraform.workspace}-${var.project_name}"
   cidr = "${var.vpc_cidr}"

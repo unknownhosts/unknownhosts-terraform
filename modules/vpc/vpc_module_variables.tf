@@ -115,25 +115,41 @@ variable "instance_tenancy" {
 variable "public_route_suffix" {
   description = "Suffix to append to public subnets name"
   type        = string
-  default     = ""
+  default     = "publc-route"
 }
 
 variable "private_route_suffix" {
   description = "Suffix to append to dev web was private subnets name"
   type        = list(string)
-  default     = []
+  default     = ["private-frontend-route",
+                 "private-frontend-route",
+                 "private-backend-route",
+                 "private-backend-route",
+                 "private-mgmt-route",
+                 "private-mgmt-route",
+                 "private-db-route",
+                 "private-db-route",
+                ]
 }
 
 variable "public_subnet_suffix" {
   description = "Suffix to append to public subnets name"
   type        = string
-  default     = ""
+  default     = "public-subnet"
 }
 
 variable "private_subnet_suffix" {
   description = "Suffix to append to private subnets name"
   type        = list(string)
-  default     = []
+  default     = ["private-frontend-subnet",
+                 "private-frontend-subnet",
+                 "private-backend-subnet",
+                 "private-backend-subnet",
+                 "private-mgmt-subnet",
+                 "private-mgmt-subnet",
+                 "private-db-subnet",
+                 "private-db-subnet"
+              ]
 }
 
 variable "public_subnets" {
