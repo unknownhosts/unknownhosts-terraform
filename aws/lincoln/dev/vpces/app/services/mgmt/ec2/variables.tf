@@ -4,16 +4,24 @@ variable "region" {
 }  
 
 variable "project_name" {
-    default = "lincoln"
-} 
+    type    = string
+}
 
-variable "env_name" {
-    type        = string
-    default     = "prod"
-    description = "environment name"
+variable "resource_name" {
+    type    = string
+}
+
+variable "environment_name" {
+    type    = string
 }
 
 
 variable "ec2_atlantis_instnace_type" {
-    default = "t2.micro"
+    type    = string
+}
+
+variable "tags" {
+}
+
+variable "remote_state_bucket_name" {
 }

@@ -58,6 +58,7 @@ project_name=""
 resource_name="${element(split("/",path_relative_to_include()),length(split("/",path_relative_to_include()))-1)}"
 remote_state_bucket_name=""
 tags={
+    Owner=""
 }
     EOF
 }

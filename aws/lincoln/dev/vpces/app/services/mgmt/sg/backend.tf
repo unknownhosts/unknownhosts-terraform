@@ -2,9 +2,9 @@
 terraform {
   backend "s3" {
     bucket         = "lincoln-dev-s3-terraform-state"
-    dynamodb_table = "lincoln-dev-ddb-tfstate-lock-global-ddb"
+    dynamodb_table = "lincoln-dev-ddb-tfstate-lock-vpces-app-services-mgmt-sg"
     encrypt        = true
-    key            = "global/ddb/terraform.tfstate"
+    key            = "vpces/app/services/mgmt/sg/terraform.tfstate"
     region         = "ap-northeast-2"
   }
 }

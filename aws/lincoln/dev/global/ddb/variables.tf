@@ -25,6 +25,7 @@ variable "lock_name" {
     "global-ddb",
     "global-iam",
     "global-s3",
-    "vpces-app-network-vpc"
+    "vpces-app-network-vpc",
+    "vpces-app-services-common-keypair"
   ]      
 }
