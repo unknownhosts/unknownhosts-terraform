@@ -2,7 +2,7 @@
 module "ec2_atlantis"{
   source                 = "../../../../../../../modules/ec2"
 
-  name                   = "${var.project_name}-${var.environment_name}-mgmt-atlantis"
+  name                   = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-atlantis"
   instance_count         = 1
 
   ami                    = data.aws_ami.amazon_linux2.id
@@ -27,7 +27,7 @@ module "ec2_atlantis"{
   
   tags = merge(
         {
-          Name = "${var.project_name}-${var.environment_name}-mgmt-atlantis"
+          Name = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-atlantis"
         },
         var.tags
         )
