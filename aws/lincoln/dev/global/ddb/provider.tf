@@ -7,7 +7,7 @@ provider "aws" {
             ProjectName         = var.project_name
             EnvironmentName     = var.environment_name
             ResourceName        = var.resource_name
-            TerraformPath       = "vpces/app/network/vpc"
+            TerraformPath       = "global/ddb"
         }
     }
 } 

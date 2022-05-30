@@ -10,7 +10,7 @@ remote_state {
         key = "${path_relative_to_include()}/terraform.tfstate"
         region = "ap-northeast-2"
         encrypt = true
-        dynamodb_table = "lincoln-dev-ddb-terraform-state-lock-${replace(path_relative_to_include(),"/","-")}"
+        dynamodb_table = "lincoln-dev-ddb-tfstate-lock-${replace(path_relative_to_include(),"/","-")}"
     }
 }
 
@@ -26,10 +26,10 @@ provider "aws" {
 
     default_tags {
         tags = {
-            ProjectName   = var.account_name
-            Environment   = var.env
-            ResourceName  = var.resource_name
-            TerraformPath = "${path_relative_to_include()}"
+            ProjectName         = var.project_name
+            EnvironmentName     = var.environment_name
+            ResourceName        = var.resource_name
+            TerraformPath       = "${path_relative_to_include()}"
         }
     }
 } 
@@ -38,8 +38,8 @@ provider "aws" {
 
 generate "local" {
     path = "local.tf"
-    if_exists = "overwrite_terragrunt"
-    #if_exists = "skip"
+    #if_exists = "overwrite_terragrunt"
+    if_exists = "skip"
 
     contents = <<EOF
 locals {
@@ -53,9 +53,12 @@ generate "tfvars" {
     if_exists = "skip"
 
     contents = <<EOF
-env=""
+environment_name=""
 project_name=""
 resource_name="${element(split("/",path_relative_to_include()),length(split("/",path_relative_to_include()))-1)}"
+remote_state_bucket_name=""
+tags={
+}
     EOF
 }
 
@@ -69,7 +72,7 @@ variable "region" {
     default = "ap-northeast-2"
 }  
 
-variable "env" {
+variable "environment_name" {
 }
 
 variable "project_name" {
@@ -78,8 +81,12 @@ variable "project_name" {
 variable "resource_name" {
 }
 
-###########################################################################################################
-    EOF
+variable "tags" {
+}
+
+variable "remote_state_bucket_name" {
+}
+   EOF
 }
 
 generate "output" {
@@ -107,7 +114,6 @@ generate "resource" {
     if_exists = "skip"
 
     contents = <<EOF
-# {CorpName}-{ResourceName}-{Phase}-{ServiceGroupName}-{ServiceName}-{Etc1}-{Etc2}
 # 리소스를 파일 여러개로 관리할 거면 여기에 ResourceName_NameTag 로 생성
     EOF
 }
@@ -118,7 +124,8 @@ generate "main" {
     if_exists = "skip"
 
     contents = <<EOF
-# {CorpName}-{ResourceName}-{Phase}-{ServiceGroupName}-{ServiceName}-{Etc1}-{Etc2}
 # 리소스를 파일 하나로 관리할 거면 여기에
     EOF
 }
+
+### test

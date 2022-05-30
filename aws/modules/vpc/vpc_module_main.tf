@@ -146,7 +146,7 @@ resource "aws_route" "public_internet_gateway_ipv6" {
 # There are as many routing tables as the number of NAT gateways
 ##############################################################################
 resource "aws_route_table" "private" {
-  count = var.create_vpc && local.max_subnet_length > 0 ? local.nat_gateway_count : 0
+  count = var.create_vpc && local.max_subnet_length > 0 ? length(var.private_route_suffix) : 0
 
   vpc_id = local.vpc_id
 
@@ -155,7 +155,7 @@ resource "aws_route_table" "private" {
       "Name" = var.single_nat_gateway ? "${var.name}-${element(var.private_route_suffix, count.index)}" : format(
         "%s-${element(var.private_route_suffix, count.index)}-%s",
         var.name,
-        upper(substr(element(var.azs, count.index),-1,0)),
+        substr(element(var.azs, count.index),-1,0),
       )
     },
     var.tags,
@@ -188,7 +188,7 @@ resource "aws_subnet" "public" {
       "Name" = format(
         "%s-${var.public_subnet_suffix}-%s",
         var.name,
-        upper(substr(element(var.azs, count.index),-1,0)),
+        substr(element(var.azs, count.index),-1,0),
       )
     },
     var.tags,
@@ -215,7 +215,7 @@ resource "aws_subnet" "private" {
       "Name" = format(
         "%s-${element(var.private_subnet_suffix,count.index)}-%s",
         var.name,
-        upper(substr(element(var.azs, count.index),-1,0)),
+        substr(element(var.azs, count.index),-1,0),
       )
     },
     var.tags,
@@ -441,7 +441,7 @@ resource "aws_nat_gateway" "this" {
 }
 
 resource "aws_route" "private_nat_gateway" {
-  count = var.create_vpc && var.enable_nat_gateway ? local.nat_gateway_count : 0
+  count = var.create_vpc && var.enable_nat_gateway ? length(var.private_route_suffix) : 0
 
   route_table_id         = element(aws_route_table.private.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
@@ -467,10 +467,7 @@ resource "aws_route_table_association" "private" {
   count = var.create_vpc && length(var.private_subnets) > 0 ? length(var.private_subnets) : 0
 
   subnet_id = element(aws_subnet.private.*.id, count.index)
-  route_table_id = element(
-    aws_route_table.private.*.id,
-    var.single_nat_gateway ? 0 : count.index,
-  )
+  route_table_id = element(aws_route_table.private.*.id,var.private_subnet_index[count.index])
 }
 
 resource "aws_route_table_association" "public" {
@@ -480,61 +477,6 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public[0].id
 }
 
-# resource "aws_route_table_association" "gateway_private" {
-#   count = var.create_vpc && length(var.gateway_private_subnets) > 0 ? length(var.gateway_private_subnets) : 0
-
-#   subnet_id = element(aws_subnet.gateway_private.*.id, count.index)
-#   route_table_id = element(
-#     aws_route_table.private.*.id,
-#     var.single_nat_gateway ? 0 : count.index,
-#   )
-# }
-
-# resource "aws_route_table_association" "frontend_private" {
-#   count = var.create_vpc && length(var.frontend_private_subnets) > 0 ? length(var.frontend_private_subnets) : 0
-
-#   subnet_id = element(aws_subnet.frontend_private.*.id, count.index)
-#   route_table_id = element(
-#     aws_route_table.private.*.id,
-#     var.single_nat_gateway ? 0 : count.index,
-#   )
-# }
-# resource "aws_route_table_association" "backend_private" {
-#   count = var.create_vpc && length(var.backend_private_subnets) > 0 ? length(var.backend_private_subnets) : 0
-
-#   subnet_id = element(aws_subnet.backend_private.*.id, count.index)
-#   route_table_id = element(
-#     aws_route_table.private.*.id,
-#     var.single_nat_gateway ? 0 : count.index,
-#   )
-# }
-# resource "aws_route_table_association" "db_private" {
-#   count = var.create_vpc && length(var.db_private_subnets) > 0 ? length(var.db_private_subnets) : 0
-
-#   subnet_id = element(aws_subnet.db_private.*.id, count.index)
-#   route_table_id = element(
-#     aws_route_table.private.*.id,
-#     var.single_nat_gateway ? 0 : count.index,
-#   )
-# }
-# resource "aws_route_table_association" "mgmt_private" {
-#   count = var.create_vpc && length(var.mgmt_private_subnets) > 0 ? length(var.mgmt_private_subnets) : 0
-
-#   subnet_id = element(aws_subnet.mgmt_private.*.id, count.index)
-#   route_table_id = element(
-#     aws_route_table.private.*.id,
-#     var.single_nat_gateway ? 0 : count.index,
-#   )
-# }
-# resource "aws_route_table_association" "bigdata_private" {
-#   count = var.create_vpc && length(var.bigdata_private_subnets) > 0 ? length(var.bigdata_private_subnets) : 0
-
-#   subnet_id = element(aws_subnet.bigdata_private.*.id, count.index)
-#   route_table_id = element(
-#     aws_route_table.private.*.id,
-#     var.single_nat_gateway ? 0 : count.index,
-#   )
-# }
 
 ##############################################################################
 # Customer Gateways
@@ -605,89 +547,6 @@ resource "aws_vpn_gateway_route_propagation" "private" {
     count.index,
   )
 }
-
-# resource "aws_vpn_gateway_route_propagation" "gateway_private" {
-#   count = var.create_vpc && var.propagate_private_route_tables_vgw && (var.enable_vpn_gateway || var.vpn_gateway_id != "") ? length(var.gateway_private_subnets) : 0
-
-#   route_table_id = element(aws_route_table.private.*.id, count.index)
-#   vpn_gateway_id = element(
-#     concat(
-#       aws_vpn_gateway.this.*.id,
-#       aws_vpn_gateway_attachment.this.*.vpn_gateway_id,
-#     ),
-#     count.index,
-#   )
-# }
-
-
-# resource "aws_vpn_gateway_route_propagation" "frontend_private" {
-#   count = var.create_vpc && var.propagate_private_route_tables_vgw && (var.enable_vpn_gateway || var.vpn_gateway_id != "") ? length(var.frontend_private_subnets) : 0
-
-#   route_table_id = element(aws_route_table.private.*.id, count.index)
-#   vpn_gateway_id = element(
-#     concat(
-#       aws_vpn_gateway.this.*.id,
-#       aws_vpn_gateway_attachment.this.*.vpn_gateway_id,
-#     ),
-#     count.index,
-#   )
-# }
-
-
-# resource "aws_vpn_gateway_route_propagation" "backend_private" {
-#   count = var.create_vpc && var.propagate_private_route_tables_vgw && (var.enable_vpn_gateway || var.vpn_gateway_id != "") ? length(var.backend_private_subnets) : 0
-
-#   route_table_id = element(aws_route_table.private.*.id, count.index)
-#   vpn_gateway_id = element(
-#     concat(
-#       aws_vpn_gateway.this.*.id,
-#       aws_vpn_gateway_attachment.this.*.vpn_gateway_id,
-#     ),
-#     count.index,
-#   )
-# }
-
-
-# resource "aws_vpn_gateway_route_propagation" "db_private" {
-#   count = var.create_vpc && var.propagate_private_route_tables_vgw && (var.enable_vpn_gateway || var.vpn_gateway_id != "") ? length(var.db_private_subnets) : 0
-
-#   route_table_id = element(aws_route_table.private.*.id, count.index)
-#   vpn_gateway_id = element(
-#     concat(
-#       aws_vpn_gateway.this.*.id,
-#       aws_vpn_gateway_attachment.this.*.vpn_gateway_id,
-#     ),
-#     count.index,
-#   )
-# }
-
-
-# resource "aws_vpn_gateway_route_propagation" "mgmt_private" {
-#   count = var.create_vpc && var.propagate_private_route_tables_vgw && (var.enable_vpn_gateway || var.vpn_gateway_id != "") ? length(var.mgmt_private_subnets) : 0
-
-#   route_table_id = element(aws_route_table.private.*.id, count.index)
-#   vpn_gateway_id = element(
-#     concat(
-#       aws_vpn_gateway.this.*.id,
-#       aws_vpn_gateway_attachment.this.*.vpn_gateway_id,
-#     ),
-#     count.index,
-#   )
-# }
-
-
-# resource "aws_vpn_gateway_route_propagation" "bigdata_private" {
-#   count = var.create_vpc && var.propagate_private_route_tables_vgw && (var.enable_vpn_gateway || var.vpn_gateway_id != "") ? length(var.bigdata_private_subnets) : 0
-
-#   route_table_id = element(aws_route_table.private.*.id, count.index)
-#   vpn_gateway_id = element(
-#     concat(
-#       aws_vpn_gateway.this.*.id,
-#       aws_vpn_gateway_attachment.this.*.vpn_gateway_id,
-#     ),
-#     count.index,
-#   )
-# }
 
 
 ##############################################################################

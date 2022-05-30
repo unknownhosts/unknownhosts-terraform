@@ -1,8 +1,8 @@
 
 module "ec2_atlantis"{
-  source                 = "../../../modules/ec2"
+  source                 = "../../../../../../../modules/ec2"
 
-  name                   = "${terraform.workspace}-${var.project_name}-atlantis"
+  name                   = "${var.project_name}-${var.env_name}atlantis"
   instance_count         = 1
 
   ami                    = data.aws_ami.amazon_linux2.id

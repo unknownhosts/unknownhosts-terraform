@@ -1,18 +1,20 @@
 module "vpc" {
-  source = "../../modules/vpc"
+  source = "../../../../../../modules/vpc"
 
-  name = "${terraform.workspace}-${var.project_name}"
-  cidr = "${var.vpc_cidr}"
+  name = "${var.project_name}-${var.vpcs_name}"
+  cidr = var.vpc_cidr
+  secondary_cidr_blocks = var.secondary_cidr
+  private_subnet_index = var.private_subnet_index
 
-  azs             = "${var.vpc_azs}"
-  public_subnets  = "${var.public_cidr}"
-  private_subnets = "${var.private_cidr}"
+  azs             = var.private_subnet_azs
+  public_subnets  = var.public_cidr
+  private_subnets = var.private_cidr
 
-  public_subnet_suffix = "${var.public_subnet_suffix}"
-  public_route_suffix = "${var.public_route_suffix}"
+  public_subnet_suffix = var.public_subnet_suffix
+  public_route_suffix = var.public_route_suffix
 
-  private_subnet_suffix = "${var.private_subnet_suffix}"
-  private_route_suffix = "${var.private_route_suffix}"
+  private_subnet_suffix = var.private_subnet_suffix
+  private_route_suffix = var.private_route_suffix
 
   enable_nat_gateway = true
   enable_vpn_gateway = false
@@ -21,7 +23,4 @@ module "vpc" {
   enable_dns_hostnames = true
   enable_dns_support = true
 
-  tags = {
-    createdBy = "jordan.kim"
-  }
 }

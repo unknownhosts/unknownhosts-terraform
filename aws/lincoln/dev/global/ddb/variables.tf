@@ -3,15 +3,28 @@ variable "region" {
     default = "ap-northeast-2"
 }  
 
+variable "environment_name" {
+}  
+
+variable "project_name" {
+}  
+
 variable "resource_name" {
+}
+
+variable "tags" {
+}
+
+variable "remote_state_bucket_name" {
+
+}
+
+variable "lock_name" {
   type    = set(string)
   default = [
-    "global-dynamodb",
+    "global-ddb",
     "global-iam",
     "global-s3",
-    "network-vpc",
-    "common-keypair",
-    "mgmt-ec2",
-    "mgmt-sg"
+    "vpces-app-network-vpc"
   ]      
 }
