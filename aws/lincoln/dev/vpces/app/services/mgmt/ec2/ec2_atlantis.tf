@@ -10,7 +10,7 @@ module "ec2_atlantis"{
   
   key_name               = data.terraform_remote_state.keypair.outputs.key_pair
   monitoring             = true
-  vpc_security_group_ids = [data.terraform_remote_state.sg.outputs.atlantis_sg_id]
+  vpc_security_group_ids = [data.terraform_remote_state.sg.outputs.dev_atlantis_sg_id]
   subnet_id              = data.terraform_remote_state.vpc.outputs.vpc[0].public_subnets[0]
   associate_public_ip_address = true 
   
