@@ -1,4 +1,4 @@
-resource "aws_security_group" "atlantis_sg" {
+resource "aws_security_group" "dev_atlantis_sg" {
   name        = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-atlantis-sg"
   description = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-atlantis-sg"
   
