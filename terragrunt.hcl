@@ -55,7 +55,7 @@ remote_state {
     encrypt        = true
     dynamodb_table = "sandbox-test-apne2-terraform-lock-table"
 
-    role_arn = "arn:aws:iam::964225094109:role/devops-sandbox-iam-role"
+    role_arn = "XXXXXXX"
   }
 }
 
@@ -67,7 +67,7 @@ generate "provider" {
 provider "aws" {
   region = "ap-southeast-1"
   assume_role {
-    role_arn     = "arn:aws:iam::964225094109:role/devops-sandbox-iam-role"
+    role_arn     = "XXXXXXX"
     session_name = "DEVOPS_SESSION"
   }
 }
@@ -109,7 +109,7 @@ locals {
   backend_s3        = var.backend_s3
   backend_dynamodb  = var.backend_dynamodb
   backend_s3_region = var.backend_s3_region
-  backend_role_arn  = "arn:aws:iam::964225094109:role/devops-sandbox-iam-role"
+  backend_role_arn  = "XXXXXXX"
 }
 
 // Shared Variables

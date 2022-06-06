@@ -2,13 +2,6 @@ version: 3
 automerge: true
 projects:
   # Dev
-  - name: dev/ap-southeast-1/test
-    dir: ap-southeast-1/test
-    workspace: dev
-    workflow: terragrunt
-    autoplan:
-      enabled: false
-
   - name: dev/ap-southeast-1/eks/cluster
     dir: ap-southeast-1/eks/cluster
     workspace: dev
@@ -46,12 +39,6 @@ projects:
       enabled: false
 
   # Prod
-  - name: prod/ap-southeast-1/test
-    dir: ap-southeast-1/test
-    workspace: prod # default
-    workflow: terragrunt
-    autoplan:
-      enabled: false
 
 workflows:
   terragrunt:
