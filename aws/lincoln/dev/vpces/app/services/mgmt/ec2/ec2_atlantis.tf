@@ -27,7 +27,8 @@ module "ec2_atlantis"{
   
   tags = merge(
         {
-          Name = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-atlantis"
+          Name = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-atlantis",
+          TEST = "TEST"
         },
         var.tags
         )
