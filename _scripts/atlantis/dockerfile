@@ -1,0 +1,10 @@
+FROM ghcr.io/runatlantis/atlantis:latest
+
+ENV TG_VERSION="v0.37.1"
+ENV TG_REPO=https://github.com/gruntwork-io/terragrunt/releases/download
+
+# terragrunt
+RUN curl -fsSL "${TG_REPO}"/"${TG_VERSION}"/terragrunt_linux_amd64 -o /usr/local/bin/terragrunt && chmod +x /usr/local/bin/terragrunt
+
+# atlantis server seide config
+COPY repos.yaml /usr/local/bin/repos.yaml
