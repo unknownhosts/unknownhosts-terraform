@@ -13,91 +13,53 @@ provider "kubernetes" {
 
 module "eks" {
 
-  source          = "../../../../../../../modules/eks"
+  source          = "../../../../../../../modules/eks_test"
   
-  cluster_name    = "${var.project_name}-${var.resource_name}-${var.environment_name}-eks-cluster"
+  cluster_name    = "${var.project_name}-${var.resource_name}-${var.environment_name}"
   cluster_version = "1.22"
-  subnets         = [data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[0],
-                     data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[1],
-                     data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[2],
-                     data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[3],
-                     data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[4],
-                     data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[5]
-  ]
 
-  vpc_id          = data.terraform_remote_state.vpc.outputs.vpc[0].vpc_id
+  cluster_endpoint_private_access = true
+  cluster_endpoint_public_access  = true 
 
-  node_groups = {
-  
-    ingress = {
-        name             = "${var.project_name}-${var.resource_name}-${var.environment_name}-ingress-eks-node"
-        desired_capacity = 1
-        max_capacity     = 1
-        min_capacity     = 1
-        subnets = [data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[0],
-                    data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[1]
-        ]
-        instance_type = "t3.large"
+  node_security_group_use_name_prefix = "false"
+  cluster_security_group_use_name_prefix = "false"
 
-        k8s_labels = {
-            nodegroup = "ingress"
-        }
-
-        launch_template_id      = aws_launch_template.ingress.id
-        launch_template_version = aws_launch_template.ingress.default_version
-
-        additional_tags = {
-        CustomTag = "FRONTEND"
-        Name = "${var.project_name}-${var.resource_name}-${var.environment_name}-ingress-eks-node"
-        }
+  cluster_addons = {
+    coredns = {
+      resolve_conflicts = "OVERWRITE"
     }
-      
-    app = {
-        name             = "${var.project_name}-${var.resource_name}-${var.environment_name}-app-eks-node"
-        desired_capacity = 1
-        max_capacity     = 1
-        min_capacity     = 1
-        subnets = [data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[2],
-                    data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[3]
-        ]
-        instance_type = "t3.large"
-
-        k8s_labels = {
-            nodegroup = "app"
-        }
-
-        launch_template_id      = aws_launch_template.app.id
-        launch_template_version = aws_launch_template.app.default_version
-
-        additional_tags = {
-        CustomTag = "BACKEND"
-        Name = "${var.project_name}-${var.resource_name}-${var.environment_name}-backend-eks-node"
-        }
-    }
-    
-    mgmt = {
-        name             = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-eks-node"
-        desired_capacity = 1
-        max_capacity     = 1
-        min_capacity     = 1
-        subnets = [data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[4],
-                    data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[5]
-        ]
-        instance_type = "t3.large"
-
-        k8s_labels = {
-            nodegroup = "mgmt"
-        }
-        
-        launch_template_id      = aws_launch_template.mgmt.id
-        launch_template_version = aws_launch_template.mgmt.default_version
-
-        additional_tags = {
-        CustomTag = "mgmt"
-        Name = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-eks-node"
-        }
+    kube-proxy = {}
+    vpc-cni = {
+      resolve_conflicts = "OVERWRITE"
     }
   }
+
+  vpc_id          = data.terraform_remote_state.vpc.outputs.vpc[0].vpc_id
+  subnet_ids      = [data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[0],
+                      data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[1],
+                      data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[2],
+                      data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[3],
+                      data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[4],
+                      data.terraform_remote_state.vpc.outputs.vpc[0].private_subnets[5]
+                    ]
+  cloudwatch_log_group_retention_in_days = 1
+
+  # EKS Managed Node Group(s)
+  eks_managed_node_group_defaults = local.node_group_defaults
+  eks_managed_node_groups = local.node_groups
+
+  # aws-auth configmap
+  manage_aws_auth_configmap = true
+  aws_auth_users            = local.aws_auth_users
+  aws_auth_accounts         = local.aws_auth_accounts
+
+  tags = merge(
+    {
+      "Name" = "${var.project_name}-${var.resource_name}-${var.environment_name}-eks-cluster"
+    },
+    var.tags
+  )
+
 }
 
 

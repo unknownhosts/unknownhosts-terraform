@@ -17,3 +17,7 @@ variable "tags" {
 
 variable "remote_state_bucket_name" {
 }
+
+variable "lincoln_aws_account_id" {
+    
+}

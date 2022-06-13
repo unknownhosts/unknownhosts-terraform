@@ -6,3 +6,4 @@ remote_state_bucket_name="lincoln-dev-s3-terraform-state"
 tags={
     Owner="jordan.kim"
 }
+lincoln_aws_account_id="661078097983"

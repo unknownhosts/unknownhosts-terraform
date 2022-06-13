@@ -25,3 +25,12 @@ data "aws_eks_cluster" "cluster" {
 data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
+
+data "terraform_remote_state" "mgmt_sg" {
+	backend = "s3"
+	config = {
+		bucket = var.remote_state_bucket_name
+		key = "vpces/app/services/mgmt/sg/terraform.tfstate"
+		region = var.region
+	}   
+}  
