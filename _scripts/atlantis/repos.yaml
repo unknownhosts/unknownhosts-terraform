@@ -15,4 +15,4 @@ workflows:
       - env:
           name: TERRAGRUNT_TFPATH
           command: 'echo "terraform${ATLANTIS_TERRAFORM_VERSION}"'
-      - run: terragrunt apply -no-color 
+      - run: terragrunt apply -no-color -auto-aprove
