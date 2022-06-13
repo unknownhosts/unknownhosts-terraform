@@ -1,6 +1,6 @@
-resource "aws_security_group" "atlantis_sg" {
-  name        = "${var.project_name}-${var.resource_name}-mgmt-atlantis-sg"
-  description = "${var.project_name}-${var.resource_name}-mgmt-atlantis-sg"
+resource "aws_security_group" "dev_atlantis_sg" {
+  name        = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-atlantis-sg"
+  description = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-atlantis-sg"
   
   vpc_id      = data.terraform_remote_state.vpc.outputs.vpc[0].vpc_id
 
