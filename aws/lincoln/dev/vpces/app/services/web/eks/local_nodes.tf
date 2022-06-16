@@ -1,3 +1,4 @@
+
 locals {
     node_group_defaults = {
 
@@ -13,16 +14,14 @@ locals {
 
         security_group_use_name_prefix  = "false"
         use_name_prefix                 = "false"
-        launch_template_use_name_prefix = "false"
+        launch_template_use_name_prefix = "true"
         iam_role_use_name_prefix        = "false"
 
         attach_cluster_primary_security_group = true
-        #vpc_security_group_ids                = [aws_security_group.additional.id]
-        
-         /* remote_access = {
-            source_security_group_ids = [data.terraform_remote_state.mgmt_sg.outputs.dev_atlantis_sg_id]
-        }  */
 
+        key_name = data.terraform_remote_state.keypair.outputs.key_pair
+        pre_bootstrap_user_data = file("userdata/init_pre.sh")
+        
         block_device_mappings = {
         xvda = {
           device_name = "/dev/xvda"
@@ -35,7 +34,7 @@ locals {
 
         security_group_rules = {
             egress_cluster_443 = {
-                description                   = "Node groups to cluster API"
+                description                   = "Custom Rules"
                 protocol                      = "tcp"
                 from_port                     = 443
                 to_port                       = 443
@@ -44,87 +43,15 @@ locals {
             }
 
             ingress_cluster_443 = {
-                description                   = "Cluster API to node groups"
+                description                   = "Custom Rules"
                 protocol                      = "tcp"
                 from_port                     = 443
                 to_port                       = 443
                 type                          = "ingress"
                 source_cluster_security_group = true
             }
-
-            ingress_cluster_kubelet = {
-                description                   = "Cluster API to node kubelets"
-                protocol                      = "tcp"
-                from_port                     = 10250
-                to_port                       = 10250
-                type                          = "ingress"
-                source_cluster_security_group = true
-            }
-
-            ingress_self_coredns_tcp = {
-                description = "Node to node CoreDNS"
-                protocol    = "tcp"
-                from_port   = 53
-                to_port     = 53
-                type        = "ingress"
-                self        = true
-            }
-
-            egress_self_coredns_tcp = {
-                description = "Node to node CoreDNS"
-                protocol    = "tcp"
-                from_port   = 53
-                to_port     = 53
-                type        = "egress"
-                self        = true
-            }
-
-            ingress_self_coredns_udp = {
-                description = "Node to node CoreDNS"
-                protocol    = "udp"
-                from_port   = 53
-                to_port     = 53
-                type        = "ingress"
-                self        = true
-            }
-
-            egress_self_coredns_udp = {
-                description = "Node to node CoreDNS"
-                protocol    = "udp"
-                from_port   = 53
-                to_port     = 53
-                type        = "egress"
-                self        = true
-            }
-
-            egress_https = {
-                description      = "Egress all HTTPS to internet"
-                protocol         = "tcp"
-                from_port        = 443
-                to_port          = 443
-                type             = "egress"
-                cidr_blocks      = ["0.0.0.0/0"]
-            }
-
-            egress_ntp_tcp = {
-                description      = "Egress NTP/TCP to internet"
-                protocol         = "tcp"
-                from_port        = 123
-                to_port          = 123
-                type             = "egress"
-                cidr_blocks      = ["0.0.0.0/0"]
-            }
-
-            egress_ntp_udp = {
-                description      = "Egress NTP/UDP to internet"
-                protocol         = "udp"
-                from_port        = 123
-                to_port          = 123
-                type             = "egress"
-                cidr_blocks      = ["0.0.0.0/0"]
-            }
-        }
-    } 
+        } 
+    }
 
     node_groups = {
         ingress = {
@@ -141,14 +68,6 @@ locals {
             update_config = {
                 max_unavailable_percentage = 50 # or set `max_unavailable`
             }
-
-            # user data
-            enable_bootstrap_user_data = true
-            bootstrap_extra_args       = "--container-runtime containerd --kubelet-extra-args '--max-pods=20'"
-            user_data_template_path = "userdata/init.sh"
-
-            /* create_launch_template = "false" 
-            launch_template_name   = aws_launch_template.ingress.name   */
 
             tags = merge(
                 {
@@ -173,14 +92,6 @@ locals {
                 max_unavailable_percentage = 50 # or set `max_unavailable`
             }
 
-            # user data
-            enable_bootstrap_user_data = true
-            bootstrap_extra_args       = "--container-runtime containerd --kubelet-extra-args '--max-pods=20'"
-            user_data_template_path = "userdata/init.sh"
-            
-            /* create_launch_template = "false"
-            launch_template_name = aws_launch_template.app.name */
-
             tags = merge(
                 {
                     "Name" = "${var.project_name}-${var.resource_name}-${var.environment_name}-app-node"
@@ -203,15 +114,6 @@ locals {
             update_config = {
                 max_unavailable_percentage = 50 # or set `max_unavailable`
             }
-
-            # user data
-            enable_bootstrap_user_data = true
-            bootstrap_extra_args       = "--container-runtime containerd --kubelet-extra-args '--max-pods=20'"
-            user_data_template_path = "userdata/init.sh"
-
-            /* create_launch_template = "false"
-            launch_template_name = aws_launch_template.mgmt.name */
-
 
             tags = merge(
                 {
