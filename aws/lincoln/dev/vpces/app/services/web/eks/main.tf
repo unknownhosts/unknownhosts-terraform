@@ -13,7 +13,7 @@ provider "kubernetes" {
 
 module "eks" {
 
-  source          = "../../../../../../../modules/eks_test"
+  source          = "../../../../../../../modules/eks"
   
   cluster_name    = "${var.project_name}-${var.resource_name}-${var.environment_name}"
   cluster_version = "1.22"
