@@ -20,6 +20,10 @@ locals {
 
         post_bootstrap_user_data = "userdata/init.sh"
 
+        /* update_config = {
+            max_unavailable_percentage = 50 # or set `max_unavailable`
+        } */
+
         block_device_mappings = {
         xvda = {
           device_name = "/dev/xvda"
@@ -64,10 +68,6 @@ locals {
                 "node-group" = "ingress"
             }
 
-            update_config = {
-                max_unavailable_percentage = 50 # or set `max_unavailable`
-            }
-
             tags = merge(
                 {
                     "Name" = "${var.project_name}-${var.resource_name}-${var.environment_name}-ingress-node"
@@ -87,10 +87,6 @@ locals {
                 "node-group" = "app"
             }
 
-            update_config = {
-                max_unavailable_percentage = 50 # or set `max_unavailable`
-            }
-
             tags = merge(
                 {
                     "Name" = "${var.project_name}-${var.resource_name}-${var.environment_name}-app-node"
@@ -108,10 +104,6 @@ locals {
             instance_types = ["t3.large"]
             labels = {
                 "node-group" = "mgmt"
-            }
-
-            update_config = {
-                max_unavailable_percentage = 50 # or set `max_unavailable`
             }
 
             tags = merge(
