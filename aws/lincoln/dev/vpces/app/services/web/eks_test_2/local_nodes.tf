@@ -53,7 +53,7 @@ locals {
                 from_port                     = 443
                 to_port                       = 443
                 type                          = "egress"
-                source_cluster_security_group = true
+                source_cluster_security_group = false
             }
 
             ingress_cluster_443 = {
@@ -62,7 +62,7 @@ locals {
                 from_port                     = 443
                 to_port                       = 443
                 type                          = "ingress"
-                source_cluster_security_group = true
+                source_cluster_security_group = false
             }
         } 
     }
