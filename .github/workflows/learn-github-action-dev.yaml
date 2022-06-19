@@ -3,8 +3,8 @@ on:
   # push:
   #   branches: [ gitac-dev ]
 
-  pull_request:
-    branches: [ gitac-dev ]
+  # pull_request:
+  #   branches: [ gitac-dev ]
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
