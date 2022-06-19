@@ -1,10 +1,10 @@
 name: learn-github-actions
 on:
-  push:
-    branches: [ master ]
+  # push:
+  #   branches: [ gitac-dev ]
 
   pull_request:
-    branches: [ master ]
+    branches: [ gitac-dev ]
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
