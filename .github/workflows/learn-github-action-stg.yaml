@@ -1,9 +1,5 @@
 name: learn-github-actions
 on:
-  # push:
-  #   branches: [ gitac-stg ]
-
-
   pull_request:
     branches: [ gitac-stg ]
 jobs:
