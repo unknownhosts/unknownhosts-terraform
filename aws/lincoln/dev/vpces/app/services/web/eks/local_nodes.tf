@@ -1,11 +1,9 @@
 locals {
     node_group_defaults = {
 
-       # iam_role_additional_policies = [
-       #     aws_iam_policy.eks_ca_asg_policy.arn,
-       #     aws_iam_policy.ebs_csi_driver.arn,
-       #     aws_iam_policy.storage.arn,
-       # ]
+       iam_role_additional_policies = [
+           data.terraform_remote_state.iampolicy.outputs.ecr_test.arn
+       ]
 
         ami_type       = "AL2_x86_64"
         instance_types = ["t3.large"]
@@ -18,7 +16,9 @@ locals {
 
         attach_cluster_primary_security_group = true
 
-        post_bootstrap_user_data = "userdata/init.sh"
+        pre_bootstrap_user_data = file("userdata/pre_user_data.sh")
+
+        key_name = data.terraform_remote_state.keypair.outputs.key_pair
 
         /* update_config = {
             max_unavailable_percentage = 50 # or set `max_unavailable`
@@ -60,8 +60,8 @@ locals {
         ingress = {
             name = "${var.project_name}-${var.resource_name}-${var.environment_name}-ingress-node"
             min_size     = 1
-            max_size     = 1
-            desired_size = 1
+            max_size     = 2
+            desired_size = 2
 
             instance_types = ["t3.large"]
             labels = {
@@ -79,8 +79,8 @@ locals {
         app = {
             name = "${var.project_name}-${var.resource_name}-${var.environment_name}-app-node"
             min_size     = 1
-            max_size     = 1
-            desired_size = 1
+            max_size     = 2
+            desired_size = 2
 
             instance_types = ["t3.large"]
             labels = {
@@ -96,10 +96,11 @@ locals {
         }
     
         mgmt = {
+
             name = "${var.project_name}-${var.resource_name}-${var.environment_name}-mgmt-node"
             min_size     = 1
-            max_size     = 1
-            desired_size = 1
+            max_size     = 2
+            desired_size = 2
 
             instance_types = ["t3.large"]
             labels = {
@@ -113,5 +114,6 @@ locals {
                     var.tags,
                 ),
         }
+
     }
 }

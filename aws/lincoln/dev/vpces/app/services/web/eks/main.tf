@@ -29,9 +29,9 @@ module "eks" {
       resolve_conflicts = "OVERWRITE"
     }
     kube-proxy = {}
-    vpc-cni = {
-      resolve_conflicts = "OVERWRITE"
-    }
+    # vpc-cni = {
+    #   resolve_conflicts = "OVERWRITE"
+    # }
   }
 
   vpc_id          = data.terraform_remote_state.vpc.outputs.vpc[0].vpc_id
@@ -50,8 +50,8 @@ module "eks" {
 
   # aws-auth configmap
   manage_aws_auth_configmap = true
-  aws_auth_users            = local.aws_auth_users
-  aws_auth_accounts         = local.aws_auth_accounts
+  # aws_auth_users            = local.aws_auth_users
+  # aws_auth_accounts         = local.aws_auth_accounts
 
   tags = merge(
     {

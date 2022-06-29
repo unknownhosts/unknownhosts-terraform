@@ -10,3 +10,4 @@ sed -i '/^set -o errexit/a\\nsource /etc/profile.d/bootstrap.sh' /etc/eks/bootst
 
 #### custom user date script 
 echo "Running custom user data pre script"
+

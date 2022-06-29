@@ -34,3 +34,12 @@ data "terraform_remote_state" "mgmt_sg" {
 		region = var.region
 	}   
 }  
+
+data "terraform_remote_state" "iampolicy" {
+	backend = "s3"
+	config = {
+		bucket = var.remote_state_bucket_name
+		key = "global/iam/terraform.tfstate"
+		region = var.region
+	}   
+}    
