@@ -37,12 +37,11 @@ resource "aws_security_group" "test" {
   )
 }
 
-# resource "aws_security_group_rule" "example" {
-#   type              = "ingress"
-#   from_port         = 0
-#   to_port           = 65535
-#   protocol          = "tcp"
-#   cidr_blocks       = [aws_vpc.example.cidr_block]
-#   ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   security_group_id = "sg-123456"
-# }
+resource "aws_security_group_rule" "example" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["10.10.10.10/32"]
+  security_group_id = aws_security_group.test.id
+}
