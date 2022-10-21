@@ -21,13 +21,13 @@ resource "aws_security_group" "test" {
     cidr_blocks = ["10.0.0.0/8"]
   }
 
-  #   ingress {
-  #     description = "in_443"
-  #     from_port   = 443
-  #     to_port     = 443
-  #     protocol    = "tcp"
-  #     cidr_blocks = ["10.10.10.10/32"]
-  #   }
+  ingress {
+    description = "in_443"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["10.10.10.10/32"]
+  }
 
   tags = merge(
     {
@@ -36,12 +36,3 @@ resource "aws_security_group" "test" {
     var.tags
   )
 }
-
-# resource "aws_security_group_rule" "example" {
-#   type              = "ingress"
-#   from_port         = 443
-#   to_port           = 443
-#   protocol          = "tcp"
-#   cidr_blocks       = ["10.10.10.10/32"]
-#   security_group_id = aws_security_group.test.id
-# }
